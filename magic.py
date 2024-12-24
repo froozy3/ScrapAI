@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import re
 import trafilatura
-from openai import OpenAI
+from openai import Client
 from datetime import datetime
 import time
 import platform
@@ -22,7 +22,6 @@ with open('settings.json', 'r') as f:
 OPENAI_API_KEY = settings["openai_api_key"]
 OUTPUT_DIRECTORY = settings["output_directory"]
 KEYWORDS_FILE = settings["keywords_file"]
-PROXY_FILE = settings["proxy_file"]
 
 # Setup basic configuration for logging
 log_dir = 'logs'
@@ -42,39 +41,6 @@ logging.basicConfig(level=logging.INFO,
 logging.getLogger('selenium').setLevel(logging.WARNING)
 logging.getLogger('seleniumwire').setLevel(logging.WARNING)
 
-def load_proxies(proxy_file):
-    logging.info("Loading proxies from %s", proxy_file)
-    proxy_list = []
-    try:
-        with open(proxy_file, 'r') as file:
-            for line in file:
-                parts = line.strip().split(':')
-                if len(parts) == 4:
-                    ip, port, username, password = parts
-                    proxy_list.append({
-                        'http': f'http://{username}:{password}@{ip}:{port}',
-                        'https': f'https://{username}:{password}@{ip}:{port}',
-                    })
-    except Exception as e:
-        logging.error("Failed to load proxies: %s", e)
-    else:
-        logging.info("Successfully loaded %d proxies.", len(proxy_list))
-    return proxy_list
-
-def get_random_proxy(proxies):
-    if not proxies:
-        return None
-    return random.choice(proxies)
-
-def setup_selenium_wire_options(proxy):
-    options = {
-        'proxy': {
-            'http': proxy['http'],
-            'https': proxy['https'],
-            'no_proxy': 'localhost,127.0.0.1',
-        }
-    }
-    return options
 
 def get_chromedriver_path():
     system = platform.system()
@@ -95,10 +61,8 @@ def setup_webdriver(proxy=None):
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920x1080")
     
-    if proxy:
-        selenium_wire_options = setup_selenium_wire_options(proxy)
-    else:
-        selenium_wire_options = None
+   
+    selenium_wire_options = None
 
     try:
         driver = webdriver.Chrome(service=service, options=chrome_options, seleniumwire_options=selenium_wire_options)
@@ -200,16 +164,17 @@ def get_links_with_beautifulsoup(driver):
     return filtered_urls
 
 # Initialize OpenAI client
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = Client(api_key=OPENAI_API_KEY)
 
 def summarize_text(text):
-    logging.info("Summarizing text with OpenAI GPT-3.5 Turbo")
+    # logging.info(f"Text: {text[:500]}")
+    logging.info("Summarizing text with OpenAI GPT-4o-mini ")
     try:
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": "You excel in extracting context and key information from long pieces of web page data provided to you. You ignore any mention of the website, any promotional material. You retain key information guides, crucial information or information that readers love and need to know etc. You remove headings, footers, copyright notices etc. You don't return any other information. Just the key information in a list form."},
-                {"role": "user", "content": f"Extract key information from the following text: {text}"}
+                {"role": "user", "content": f"If text not english, translate on english please.Extract key information from the following text: {text}"}
             ],
             temperature=0.7,  # Adjust the creativity of the response
             max_tokens=1000,  # Limit the length of the summary
@@ -223,9 +188,8 @@ def summarize_text(text):
         logging.error(f"Failed to summarize text with OpenAI GPT-3.5 Turbo: %s", e)
         return None
 
-def process_keyword(keyword, proxies):
-    proxy = get_random_proxy(proxies)
-    driver = setup_webdriver(proxy) if proxy else setup_webdriver()
+def process_keyword(keyword):
+    driver = setup_webdriver()    
     driver.get(f'https://www.google.com/search?q={keyword}')
     links = get_links_with_beautifulsoup(driver)
     contents = extract_contents_from_links(links)
@@ -253,9 +217,6 @@ def save_contents_to_json(keyword, contents):
 def main():
     logging.info("Script started")
     try:
-        proxies = load_proxies(PROXY_FILE)
-        if not proxies:
-            logging.warning("No proxies loaded. Proceeding without proxies.")
         
         if not os.path.exists(KEYWORDS_FILE):
             logging.error("%s not found. Exiting script.", KEYWORDS_FILE)
@@ -267,7 +228,7 @@ def main():
         for keyword in keywords:
             logging.info("Processing keyword: %s", keyword)
             try:
-                process_keyword(keyword, proxies)
+                process_keyword(keyword)
             except Exception as e:
                 logging.error("An error occurred while processing keyword %s: %s", keyword, e)
             finally:

@@ -1,6 +1,6 @@
 {
-  "openai_api_key": "your_openai_api_key",
-  "output_directory": "Output_Folder_Name",
+  "openai_api_key": "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",
+  "output_directory": "Scrape-Summarize",
   "keywords_file": "keywords.csv",
   "proxy_file": "proxylist.txt"
 }
