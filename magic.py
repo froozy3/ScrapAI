@@ -14,6 +14,7 @@ from datetime import datetime
 import time
 import platform
 from retrying import retry
+from typing import List
 
 # Load settings from settings.json
 with open('settings.json', 'r') as f:
@@ -117,7 +118,7 @@ def get_links_with_beautifulsoup(driver):
         return []
 
     try:
-        soup = BeautifulSoup(html, 'lxml')
+        soup = BeautifulSoup(html, 'lxml',from_encoding='utf-8')
         logging.info("HTML parsed successfully with BeautifulSoup.")
     except Exception as e:
         logging.error("Failed to parse HTML with BeautifulSoup: %s", e)
@@ -163,18 +164,28 @@ def get_links_with_beautifulsoup(driver):
 
     return filtered_urls
 
-# Initialize OpenAI client
-client = Client(api_key=OPENAI_API_KEY)
 
+# Initialize OpenAI client
+client = Client(api_key=OPENAI_API_KEY) 
 def summarize_text(text):
-    # logging.info(f"Text: {text[:500]}")
-    logging.info("Summarizing text with OpenAI GPT-4o-mini ")
+    # try:
+    #     with open(text,'r',encoding='utf-8') as file:
+    #         text = file.read()
     try:
+        logging.info("Summarizing text with OpenAI GPT-4o-mini ")
+    
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": "You excel in extracting context and key information from long pieces of web page data provided to you. You ignore any mention of the website, any promotional material. You retain key information guides, crucial information or information that readers love and need to know etc. You remove headings, footers, copyright notices etc. You don't return any other information. Just the key information in a list form."},
-                {"role": "user", "content": f"If text not english, translate on english please.Extract key information from the following text: {text}"}
+                {"role": "user", "content": f"""I will provide you with a text. Your task is to process the information and present it in the following format:
+
+                 1. SHORTLY: Summarize the main idea of the text in 1-2 sentences.
+                 2. MORE: Provide a more detailed explanation of the key points from the text in a few sentences, using clear and concise language.
+                 3. IMPORTANT: Highlight 5 important facts or statistics from the text, presented in bullet points.
+                 4. RELATED: Suggest 5 related questions or topics based on the content of the text.
+
+                 Now, process the following text in this format: Extract key information from the following text: {text}"""}
             ],
             temperature=0.7,  # Adjust the creativity of the response
             max_tokens=1000,  # Limit the length of the summary
@@ -183,9 +194,38 @@ def summarize_text(text):
             presence_penalty=0.5
         )
         summary = completion.choices[0].message.content.strip()
-        return summary
+        shortly = None
+        more = None
+        important = []
+        related = []
+
+        # Разбираем ответ, чтобы извлечь каждую часть
+        lines = summary.split('\n')
+
+        # Проходим по строкам и извлекаем информацию для каждого раздела
+        for line in lines:
+            if line.startswith('1. SHORTLY:'):
+                shortly = line[len('1. SHORTLY:'):].strip()
+            elif line.startswith('2. MORE:'):
+                more = line[len('2. MORE:'):].strip()
+            elif line.startswith('3. IMPORTANT:'):
+                important_section = []
+                # Добавляем все строки после "IMPORTANT", пока не встретится новый раздел
+                for important_line in lines[lines.index(line)+1:]:
+                    if important_line.startswith('4. RELATED:'):
+                        break
+                    important_section.append(important_line.strip())
+                important = [item for item in important_section if item]
+            elif line.startswith('4. RELATED:'):
+                related_section = []
+                # Добавляем все строки после "RELATED"
+                for related_line in lines[lines.index(line)+1:]:
+                    related_section.append(related_line.strip())
+                related = [item for item in related_section if item]
+
+        return {'shortly': shortly, 'more': more, 'important': important, 'related': related}
     except Exception as e:
-        logging.error(f"Failed to summarize text with OpenAI GPT-3.5 Turbo: %s", e)
+        logging.error(f"Failed to summarize text with OpenAI GPT-4o-mini Turbo: %s", e)
         return None
 
 def process_keyword(keyword):
@@ -196,22 +236,33 @@ def process_keyword(keyword):
     save_contents_to_json(keyword, contents)
     driver.quit()
 
-def extract_contents_from_links(links):
+def extract_contents_from_links(links:List[str]):
     contents = []
     for link in links:
         content = extract_with_trafilatura(link)
         if content:
             summary = summarize_text(content)
             if summary:
-                contents.append({'url': link, 'summary': summary})
+                contents.append({
+                    'url': link, 
+                    'summary': summary,
+                    'shortly':summary['shortly'],
+                    'more': summary['more'],
+                    'important': summary['important'],
+                    'related': summary['related']
+                    })
     return contents
 
 def save_contents_to_json(keyword, contents):
     if contents:
         os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
+
+        if len(keyword) > 20:
+            keyword = keyword[:20]
+            
         file_path = os.path.join(OUTPUT_DIRECTORY, f'{keyword}.json')
-        with open(file_path, 'w') as outfile:
-            json.dump(contents, outfile, indent=4)
+        with open(file_path, 'w',encoding='utf-8') as outfile:
+            json.dump(contents, outfile, indent=4, ensure_ascii=False)
         logging.info("Data for keyword '%s' successfully written to %s", keyword, file_path)
 
 def main():
@@ -222,7 +273,7 @@ def main():
             logging.error("%s not found. Exiting script.", KEYWORDS_FILE)
             return
 
-        with open(KEYWORDS_FILE, 'r') as f:
+        with open(KEYWORDS_FILE, 'r', encoding='utf-8') as f:
             keywords = [row[0] for row in csv.reader(f) if row]  # Assumes no header
 
         for keyword in keywords:
@@ -236,13 +287,15 @@ def main():
 
             # Remove the processed keyword from the list
             keywords.remove(keyword)
-            with open(KEYWORDS_FILE, 'w', newline='') as f:
+            with open(KEYWORDS_FILE, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer.writerows([[k] for k in keywords])
 
     except Exception as e:
         logging.error("An unexpected error occurred: %s", e)
     logging.info("Script completed")
-
+    # print(extract_contents_from_links(links=['https://en.wikipedia.org/wiki/Cat', 'https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%88%D0%BA%D0%B0']))
+    # print(extract_with_trafilatura(url='https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%88%D0%BA%D0%B0'))
+    # print(process_keyword('Брєд Пітт'))
 if __name__ == "__main__":
     main()

@@ -1,0 +1,27 @@
+I will provide you with a text. Your task is to process the information and present it in the following format:
+
+1. SHORTLY: Summarize the main idea of the text in 1-2 sentences.
+
+2. MORE: Provide a more detailed explanation of the key points from the text in a few sentences, using clear and concise language.
+
+3. IMPORTANT: Highlight 3-5 important facts or statistics from the text, presented in bullet points.
+
+4. RELATED: Suggest 3-5 related questions or topics based on the content of the text.
+
+Example format:
+SHORTLY: [Brief summary of the text].
+MORE: [Expanded explanation with key details].
+IMPORTANT: 
+- [Key fact 1].
+- [Key fact 2].
+- [Key fact 3].
+- [Key fact 4].
+RELATED:
+1. [Related question 1].
+2. [Related question 2].
+3. [Related question 3].
+4. [Related question 4].
+5. [Related question 5].
+
+Now, process the following text in this format:
+[Insert your text here]
