@@ -1,0 +1,40 @@
+2024-12-26 00:03:05,351 - INFO - Script started
+2024-12-26 00:03:05,357 - INFO - Processing keyword: Тор Бог Грома
+2024-12-26 00:03:07,196 - INFO - WebDriver initialized successfully.
+2024-12-26 00:03:14,998 - INFO - Retrieving page source for URL extraction
+2024-12-26 00:03:15,106 - INFO - Page source retrieved successfully.
+2024-12-26 00:03:15,178 - INFO - HTML parsed successfully with BeautifulSoup.
+2024-12-26 00:03:15,181 - INFO - Found 13 links in the page source.
+2024-12-26 00:03:15,182 - INFO - Extracted initial 8 URLs.
+2024-12-26 00:03:15,182 - INFO - Filtered URLs count after initial filter: 8
+2024-12-26 00:03:15,182 - INFO - Retained URL: https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)
+2024-12-26 00:03:15,182 - INFO - Retained URL: https://uakino.me/filmy/genre-action/21431-tor-bog-gromu.html
+2024-12-26 00:03:15,182 - INFO - Retained URL: https://rezka.ag/films/fantasy/70618-tor-bog-groma-2022.html
+2024-12-26 00:03:15,182 - INFO - Retained URL: https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)#:~:text=%D0%9E%D0%B1%D0%B0%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20(%C2%AB%D0%A2%D0%BE%D1%80%C2%BB%20%D0%B8,%D0%BC%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC%20%D0%A2%D0%BE%D1%80%D0%B0%20%D0%B8%20%D0%B4%D1%83%D0%B1%D0%B8%D0%BD%D0%BA%D0%BE%D0%B9%20%D0%93%D0%B5%D1%80%D0%BA%D1%83%D0%BB%D0%B5%D1%81%D0%B0.
+2024-12-26 00:03:15,182 - INFO - Retained URL: https://translate.google.com/translate?u=https://simple.wikipedia.org/wiki/Thor&hl=ru&sl=en&tl=ru&client=rq&prev=search#:~:text=Thor%20(Old%20Norse%3A%20%C3%9E%C3%B3rr),the%20strongest%20of%20the%20%C3%86sir.
+2024-12-26 00:03:15,182 - INFO - Filtered URLs: ['https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)', 'https://uakino.me/filmy/genre-action/21431-tor-bog-gromu.html', 'https://rezka.ag/films/fantasy/70618-tor-bog-groma-2022.html', 'https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)#:~:text=%D0%9E%D0%B1%D0%B0%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20(%C2%AB%D0%A2%D0%BE%D1%80%C2%BB%20%D0%B8,%D0%BC%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC%20%D0%A2%D0%BE%D1%80%D0%B0%20%D0%B8%20%D0%B4%D1%83%D0%B1%D0%B8%D0%BD%D0%BA%D0%BE%D0%B9%20%D0%93%D0%B5%D1%80%D0%BA%D1%83%D0%BB%D0%B5%D1%81%D0%B0.', 'https://translate.google.com/translate?u=https://simple.wikipedia.org/wiki/Thor&hl=ru&sl=en&tl=ru&client=rq&prev=search#:~:text=Thor%20(Old%20Norse%3A%20%C3%9E%C3%B3rr),the%20strongest%20of%20the%20%C3%86sir.']
+2024-12-26 00:03:15,182 - INFO - Extracting content from URL: https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)
+2024-12-26 00:03:15,516 - INFO - using custom extraction: None
+2024-12-26 00:03:15,516 - INFO - not enough comments None
+2024-12-26 00:03:15,516 - INFO - Content extracted successfully from URL: https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)
+2024-12-26 00:03:15,516 - INFO - Extracting content from URL: https://uakino.me/filmy/genre-action/21431-tor-bog-gromu.html
+2024-12-26 00:03:16,401 - INFO - using custom extraction: None
+2024-12-26 00:03:16,401 - INFO - not enough comments None
+2024-12-26 00:03:16,401 - INFO - Content extracted successfully from URL: https://uakino.me/filmy/genre-action/21431-tor-bog-gromu.html
+2024-12-26 00:03:16,401 - INFO - Extracting content from URL: https://rezka.ag/films/fantasy/70618-tor-bog-groma-2022.html
+2024-12-26 00:03:37,458 - ERROR - retries/redirects: https://rezka.ag/films/fantasy/70618-tor-bog-groma-2022.html HTTPSConnectionPool(host='rezka.ag', port=443): Max retries exceeded with url: /films/fantasy/70618-tor-bog-groma-2022.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001EF8DE9BA90>, 'Connection to rezka.ag timed out. (connect timeout=30)'))
+2024-12-26 00:03:37,458 - WARNING - Failed to download content from URL: https://rezka.ag/films/fantasy/70618-tor-bog-groma-2022.html
+2024-12-26 00:03:37,458 - INFO - Extracting content from URL: https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)#:~:text=%D0%9E%D0%B1%D0%B0%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20(%C2%AB%D0%A2%D0%BE%D1%80%C2%BB%20%D0%B8,%D0%BC%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC%20%D0%A2%D0%BE%D1%80%D0%B0%20%D0%B8%20%D0%B4%D1%83%D0%B1%D0%B8%D0%BD%D0%BA%D0%BE%D0%B9%20%D0%93%D0%B5%D1%80%D0%BA%D1%83%D0%BB%D0%B5%D1%81%D0%B0.
+2024-12-26 00:03:37,583 - INFO - using custom extraction: None
+2024-12-26 00:03:37,583 - INFO - not enough comments None
+2024-12-26 00:03:37,583 - INFO - Content extracted successfully from URL: https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%80_(%D0%BC%D0%B8%D1%84%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F)#:~:text=%D0%9E%D0%B1%D0%B0%20%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%20(%C2%AB%D0%A2%D0%BE%D1%80%C2%BB%20%D0%B8,%D0%BC%D0%BE%D0%BB%D0%BE%D1%82%D0%BE%D0%BC%20%D0%A2%D0%BE%D1%80%D0%B0%20%D0%B8%20%D0%B4%D1%83%D0%B1%D0%B8%D0%BD%D0%BA%D0%BE%D0%B9%20%D0%93%D0%B5%D1%80%D0%BA%D1%83%D0%BB%D0%B5%D1%81%D0%B0.
+2024-12-26 00:03:37,583 - INFO - Extracting content from URL: https://translate.google.com/translate?u=https://simple.wikipedia.org/wiki/Thor&hl=ru&sl=en&tl=ru&client=rq&prev=search#:~:text=Thor%20(Old%20Norse%3A%20%C3%9E%C3%B3rr),the%20strongest%20of%20the%20%C3%86sir.
+2024-12-26 00:03:37,708 - INFO - Redirecting https://translate.google.com/translate?u=https://simple.wikipedia.org/wiki/Thor&hl=ru&sl=en&tl=ru&client=rq&prev=search#:~:text=Thor%20(Old%20Norse%3A%20%C3%9E%C3%B3rr),the%20strongest%20of%20the%20%C3%86sir. -> https://simple-wikipedia-org.translate.goog/wiki/Thor?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=rq
+2024-12-26 00:03:37,992 - INFO - Redirecting https://simple-wikipedia-org.translate.goog/wiki/Thor?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=rq -> https://simple-m-wikipedia-org.translate.goog/wiki/Thor?_x_tr_sl=en&_x_tr_tl=ru&_x_tr_hl=ru&_x_tr_pto=rq
+2024-12-26 00:03:38,369 - INFO - using custom extraction: None
+2024-12-26 00:03:38,369 - INFO - not enough comments None
+2024-12-26 00:03:38,369 - INFO - Content extracted successfully from URL: https://translate.google.com/translate?u=https://simple.wikipedia.org/wiki/Thor&hl=ru&sl=en&tl=ru&client=rq&prev=search#:~:text=Thor%20(Old%20Norse%3A%20%C3%9E%C3%B3rr),the%20strongest%20of%20the%20%C3%86sir.
+2024-12-26 00:03:38,369 - INFO - Summarizing text with OpenAI GPT-4o-mini 
+2024-12-26 00:03:42,915 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-26 00:03:42,921 - INFO - Data for keyword Тор Бог Грома successfully written to Scrape-Summarize\Тор Бог Грома.json
+2024-12-26 00:03:48,467 - INFO - Script completed
